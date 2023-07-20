@@ -1,13 +1,16 @@
 package com.gsw.sbs_tim.java.ssg;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
 	static Scanner scan = new Scanner(System.in);
-	static int[] ids = new int[3]; // 번호 저장소
-	static String[] titles = new String[3]; // 제목 저장소
-	static String[] bodies = new String[3]; // 내용 저장소
+
+	static ArrayList<Integer> ids = new ArrayList<>();
+	static ArrayList<String> titles = new ArrayList<>();
+	static ArrayList<String> bodies = new ArrayList<>();
+
 	static int lastIndex = 0; // 데이터 하나 저장할 때마다 1증가
 	// int articleId = 1; // 게시물 번호
 
@@ -52,11 +55,11 @@ public class Main {
 	// 게시물 작성
 	private static void write() {
 
-		ids[lastIndex] = lastIndex + 1;
+		ids.add(lastIndex + 1);
 		System.out.printf("제목을 입력해주세요 : ");
-		titles[lastIndex] = scan.nextLine();
+		titles.add(scan.nextLine());
 		System.out.printf("내용을 입력해주세요 : ");
-		bodies[lastIndex] = scan.nextLine();
+		bodies.add(scan.nextLine());
 		System.out.println();
 
 		System.out.println("게시물이 저장되었습니다.");
@@ -68,9 +71,9 @@ public class Main {
 	// 게시물 목록
 	private static void list() {
 		for (int i = 0; i < lastIndex; i++) {
-			System.out.println("번호 : " + ids[i]);
-			System.out.println("제목 : " + titles[i]);
-			System.out.println("내용 : " + bodies[i]);
+			System.out.println("번호 : " + ids.get(i));
+			System.out.println("제목 : " + titles.get(i));
+			System.out.println("내용 : " + bodies.get(i));
 			System.out.println();
 		}
 
@@ -94,8 +97,8 @@ public class Main {
 			String body = scan.nextLine();
 			System.out.println();
 
-			titles[index] = title;
-			bodies[index] = body;
+			titles.set(index, title);
+			bodies.set(index, body);
 
 			list();
 
@@ -119,28 +122,17 @@ public class Main {
 			System.out.println("없는 게시물 번호입니다.");
 			System.out.println();
 			System.out.println("다시 입력해주세요");
-			
-			
+
 		} else {// 삭제코드
 
-			for (int i = index; i < lastIndex; i++) {
-				ids[i] = ids[i + 1];
-			}
+			ids.remove(index);
+			titles.remove(index);
+			bodies.remove(index);
 
-			for (int i = index; i < lastIndex; i++) {
-				titles[i] = titles[i + 1];
-			}
-
-			for (int i = index; i < lastIndex; i++) {
-				bodies[i] = bodies[i + 1];
-			}
-			lastIndex--;
-
-			
 			System.out.println("삭제가 완료되었습니다");
 			System.out.println();
 			list();
-			
+
 		}
 
 	}
@@ -151,7 +143,7 @@ public class Main {
 		int index = -1;
 
 		for (int i = 0; i < lastIndex; i++) {
-			if (targetId == ids[i]) {
+			if (targetId == ids.get(i)) {
 				index = i;
 				break;
 			}
