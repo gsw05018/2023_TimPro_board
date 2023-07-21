@@ -9,7 +9,7 @@ public class MemberController {
 
 	ArrayList<Member> members = new ArrayList<>();
 	Scanner scan = new Scanner(System.in);
-	public Member loginedMember = null;
+	public static Member loginedMember;
 	int lastMemberId = 1;// 데이터 하나 저장할 때마다 1증가
 
 	public void doCommand(int cmd) {
@@ -96,12 +96,22 @@ public class MemberController {
 
 		}
 	}
-	
-	//로그아웃
+
+	// 로그아웃
 	private void logout() {
 		loginedMember = null;
 		System.out.println("로그아웃 되셨습니다.");
 
+	}
+
+	public String getNicknameByMemberId(int memberId) {
+		for (int i = 0; i < members.size(); i++) {
+			if (members.get(i).id == memberId) {
+				return members.get(i).nickName;
+			}
+		}
+
+		return null;
 	}
 
 }

@@ -7,17 +7,17 @@ public class Article {
 	public int id; //번호
 	public String title; //제목 
 	public String body; //내용
-	public String nickName; 
+	public int memberId; 
 	public String regDate;
 	public int hit;
 	
 	
-	public Article(int id, String title, String body, String nickName, String regDate, int hit) {
+	public Article(int id, String title, String body, int memberId, String regDate, int hit) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.body = body;
-		this.nickName = nickName;
+		this.memberId = memberId;
 		this.regDate = regDate;
 		this.hit = hit;
 	}

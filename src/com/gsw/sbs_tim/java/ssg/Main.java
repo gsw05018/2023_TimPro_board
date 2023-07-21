@@ -14,7 +14,6 @@ public class Main {
 		MemberController memberController = new MemberController();
 
 		while (true) {
-
 			System.out.println("1. 회원가입");
 			System.out.println("2. 로그인");
 			System.out.println("3. 로그아웃");
@@ -24,15 +23,16 @@ public class Main {
 			System.out.println("7. 게시물 수정");
 			System.out.println("8. 게시물 삭제");
 			System.out.println("9. 게시물 상세페이지");
+			System.out.println("0. 게시물 닫기");
 			System.out.println();
 
 			if (memberController.loginedMember == null) {
 
-				System.out.println("해당되는 번호를 입력해주세요 : ");
+				System.out.printf("이동할 메뉴번호를 입력해주세요 : ");
 
 			} else {
 
-				System.out.printf("%s[%s]해당되는 번호를 입력해주세요 : ", memberController.loginedMember.loginId,
+				System.out.printf("%s[%s]이동할 메뉴번호를 입력해주세요 : ", memberController.loginedMember.loginId,
 						memberController.loginedMember.nickName);
 
 			}
