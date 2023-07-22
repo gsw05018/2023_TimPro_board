@@ -28,12 +28,25 @@ public class ArticleController {
 			write();
 
 		} else if (cmd == 5) {
+			if (articles.size() == 0) {
+				System.out.println("게시글이 없습니다");
+				System.out.println();
+			} else if (articles.size() >= 1) {
 
-			list();
+				list();
+
+			}
 
 		} else if (cmd == 6) {
 
-			search();
+			if (articles.size() == 0) {
+				System.out.println("게시글이 없습니다");
+				System.out.println();
+			} else if (articles.size() >= 1) {
+
+				search();
+
+			}
 
 		} else if (cmd == 7) {
 			if (memberController.loginedMember == null) {
@@ -62,7 +75,7 @@ public class ArticleController {
 			detail();
 
 		} else {
-			System.out.println("다시 입력해주세요");
+			System.out.printf("다시 입력해주세요 : ");
 			System.out.println();
 
 		}
@@ -90,17 +103,13 @@ public class ArticleController {
 	// 게시물 목록
 	private void list() {
 
-		ArrayList<Article> article = articles;
-
-		if (articles.size() < 0) {
-			System.out.println("게시물이 없습니다");
-		}
 		printArticles(articles);
 	}
 
 	// 게시물 검색
 	private void search() {
-		System.out.printf("검색 키워드를 입력해주세요 : ");
+
+		System.out.printf("검색 키워드를 입력해주세요(제목, 내용) : ");
 
 		String keyWord = scan.nextLine();
 
@@ -114,22 +123,30 @@ public class ArticleController {
 			} else if (article.body.contains(keyWord)) {
 				searchedList.add(article);
 
+			} else {
+				System.out.println();
+				System.out.println("검색된 게시글이 없습니다");
+				System.out.println();
 			}
+
 		}
 		printArticles(searchedList);
+
 	}
 
 	// 게시물 수정
 	private void modify() {
 		System.out.printf("수정할 게시물 번호 : ");
-		System.out.println();
+
 		int targetId = Integer.parseInt(scan.nextLine());
+		System.out.println();
 
 		int index = findIndexByArticled(targetId);
 
 		if (index == -1) {
 			System.out.println("없는 게시물 번호입니다.");
 			System.out.println();
+
 		} else {
 			System.out.print("제목 : ");
 			String title = scan.nextLine();
@@ -152,15 +169,16 @@ public class ArticleController {
 	private void delete() {
 
 		System.out.printf("삭제할 게시물 번호 : ");
-		System.out.println();
+
 		int targetId = Integer.parseInt(scan.nextLine());
+		System.out.println();
 
 		int index = findIndexByArticled(targetId);
 
 		if (index == -1) {
 			System.out.println("없는 게시물 번호입니다.");
 			System.out.println();
-			System.out.printf("다시 입력해주세요");
+			
 
 		} else {// 삭제코드
 
@@ -169,9 +187,9 @@ public class ArticleController {
 			System.out.println("삭제가 완료되었습니다");
 			System.out.println();
 			list();
+			
 
 		}
-
 	}
 
 	// 게시물 상세페이지
@@ -183,6 +201,7 @@ public class ArticleController {
 
 		if (targetIndex == -1) {
 			System.out.println("없는 게시물입니다");
+			System.out.println();
 		} else {
 			Article article = articles.get(targetIndex);
 			article.hit++; // 조회수 1증가
@@ -194,12 +213,14 @@ public class ArticleController {
 				System.out.println("1. 댓글 등록");
 				System.out.println("2. 댓글 삭제");
 				System.out.println("3. 댓글 수정");
-				System.out.println("4. 추천 ");
+				System.out.println("4. 게시물 추천 ");
 				System.out.println("5. 메뉴 돌아가기");
 				System.out.println();
 				System.out.printf("메뉴를 선택해주세요 : ");
-				System.out.println();
+
 				int cmd = Integer.parseInt(scan.nextLine());
+				System.out.println();
+
 				if (cmd == 5) {
 					break;
 				}
@@ -213,9 +234,9 @@ public class ArticleController {
 	// 게시물 목록 하나만 출력하는 함수
 	private void printArticle(Article article) {
 
-		String nicknameOfArticle = memberController.getNicknameByMemberId(article.memberId);
-
 		ArrayList<Reply> replys = detailController.replys;
+
+		String nicknameOfArticle = memberController.getNicknameByMemberId(article.memberId);
 
 		System.out.println();
 		System.out.printf("<%d번 게시물>\n", article.id);
@@ -246,36 +267,39 @@ public class ArticleController {
 			Reply reply = replys.get(i);
 
 			if (reply.articleId == article.id) {
-				String nicknameOfReply = memberController.getNicknameByMemberId(reply.memberId);
+				String nicknameOfReply = memberController.getNicknameByMemberId(article.memberId);
 
 				System.out.println("번호 : " + reply.id);
 				System.out.println("내용 : " + reply.body);
 				System.out.println("작성자 : " + nicknameOfReply);
 				System.out.println("작성일 : " + reply.regDate);
-				System.out.println();
 
 			}
 
+			System.out.println("");
+			System.out.println("< 댓글 > ");
+
 		}
+		System.out.println();
 
 	}
 
 	// 게시물 목록 여려개 출력하는 함수
 	private void printArticles(ArrayList<Article> targetList) {
-
 		for (int i = 0; i < targetList.size(); i++) {
-			Article article = targetList.get(i);
 
-			String nickname = memberController.getNicknameByMemberId(article.memberId);
 			ArrayList<Reply> replys = detailController.replys;
 
+			Article article = targetList.get(i);
+			String nickname = memberController.getNicknameByMemberId(article.memberId);
 			System.out.println("번호 : " + article.id);
 			System.out.println("제목 : " + article.title);
 			System.out.println("내용 : " + article.body);
 			System.out.println("작성자 : " + nickname);
-			System.out.println("등록날짜 : " + util.getNowDateStr());
-			System.out.println("댓글수 : " + replys.size());
+			System.out.println("등록날짜 : " + article.regDate);
 			System.out.println("조회수 : " + article.hit);
+			System.out.println("댓글수 : " + replys.size());
+
 			Like like = detailController.getLikeByArticleIdAndMemberId(article.id, MemberController.loginedMember.id);
 
 			int count = detailController.getLikeCountOfArticle(article.id);
@@ -287,10 +311,8 @@ public class ArticleController {
 				System.out.println("추천 : ♥ " + count);
 
 			}
-
 			System.out.println();
 		}
-
 	}
 
 	// 게시물 번호 찾기 함수
@@ -307,6 +329,5 @@ public class ArticleController {
 		}
 		return index;
 	}
-
 
 }

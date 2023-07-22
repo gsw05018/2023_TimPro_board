@@ -28,7 +28,7 @@ public class DetailController {
 
 		} else if (cmd == 3) {
 
-			modifyReply();
+			modifyReply(article);
 
 		} else if (cmd == 4) {
 
@@ -42,7 +42,7 @@ public class DetailController {
 
 		System.out.println("댓글 내용을 입력해주세요");
 		System.out.printf("내용 : ");
-	
+
 		String body = scan.nextLine();
 		int memberId = MemberController.loginedMember.id;
 		String regDate = util.getNowDateStr();
@@ -57,56 +57,59 @@ public class DetailController {
 
 	// 댓글 삭제
 	private void deleteReply(Article article) {
+
 		System.out.printf("삭제할 댓글번호 입력해주세요 : ");
-		int id = Integer.parseInt(scan.nextLine());
+		System.out.println();
+		int targetId = Integer.parseInt(scan.nextLine());
 
-		for (int i = 0; i < replys.size(); i++) {
-			Reply reply = replys.get(i);
+		int index = findIndexByReply(targetId);
 
-			if (replys.size() > 0) {
-				replys.remove(replys.get(i));
+		if (index == -1) {
+			System.out.println("댓글이 없습니다.");
+			System.out.println();
+			System.out.printf("다시 입력해주세요");
 
-			}
+		} else {// 삭제코드
 
-		} if(replys.size() < 0) {
-			System.out.println("삭제할 댓글이 없습니다");
+			replys.remove(index);
+
+			System.out.println("삭제가 완료되었습니다");
+			System.out.println();
+
 		}
 
 	}
 
 	// 댓글 수정
-	private void modifyReply() {
+	private void modifyReply(Article article) {
 
 		System.out.printf("수정할 댓글 번호 : ");
 		System.out.println();
-		int id = Integer.parseInt(scan.nextLine());
-		
-		int index = findIndexByReply(id);
+		int targetId = Integer.parseInt(scan.nextLine());
+
+		int index = findIndexByReply(targetId);
 
 		if (index == -1) {
-			System.out.println("없는 게시물 번호입니다.");
+			System.out.println("없는 댓글 번호입니다.");
 			System.out.println();
 		} else {
-			System.out.print("제목 : ");
-			String title = scan.nextLine();
+
+			int memberId = MemberController.loginedMember.id;
+			String regDate = util.getNowDateStr();
 			System.out.print("내용 : ");
 			String body = scan.nextLine();
 			System.out.println();
 
-			replys.set(index, new Article(targetId, title, body, 1, util.getNowDateStr(), 0));
+			replys.set(index, new Reply(targetId, article.id, body, memberId, regDate));
 
-			list();
-
-			System.out.println("게시물 수정이 완료되었습니다.");
+			System.out.println("댓글 수정이 완료되었습니다.");
 			System.out.println();
 
 		}
-		
 
-		
 	}
 
-	// 좋아요
+	// 게시물 좋아요
 	public void like(Article article) {
 
 		int articleId = article.id;
@@ -137,7 +140,7 @@ public class DetailController {
 		return null;
 	}
 
-	// 좋아요 숫자 카운트
+	// 게시물 좋아요 숫자 카운트
 	public int getLikeCountOfArticle(int articleId) {
 
 		int count = 0;
@@ -150,20 +153,19 @@ public class DetailController {
 		return count;
 	}
 
-	
 	// 댓글 찾는 함수
-	public int findIndexByReply(int articleId) {
+	public int findIndexByReply(int targetId) {
 
 		int index = -1;
 
 		for (int i = 0; i < replys.size(); i++) {
 			Reply reply = replys.get(i);
-			if (articleId == reply.id) {
+			if (targetId == reply.id) {
 				index = i;
 				break;
 			}
 		}
 		return index;
 	}
-	
+
 }

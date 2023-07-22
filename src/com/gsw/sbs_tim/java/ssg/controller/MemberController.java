@@ -7,10 +7,17 @@ import com.gsw.sbs_tim.java.ssg.dto.Member;
 
 public class MemberController {
 
+	static Scanner scan = new Scanner(System.in);
 	ArrayList<Member> members = new ArrayList<>();
-	Scanner scan = new Scanner(System.in);
-	public static Member loginedMember;
-	int lastMemberId = 1;// 데이터 하나 저장할 때마다 1증가
+	int lastMemberId = 1;
+
+	public static Member loginedMember = null;
+
+	public MemberController() {
+		for (int i = 0; i < members.size(); i++) {
+			loginedMember = members.get(i);
+		}
+	}
 
 	public void doCommand(int cmd) {
 
@@ -52,7 +59,7 @@ public class MemberController {
 	// 회원가입 된 목록을 보여주는 함수
 	private void printMembers(ArrayList<Member> members) {
 
-		System.out.println("현재 회원 가입 된 회원 목록");
+		System.out.println("< 현재 회원 가입 된 회원 목록 >");
 		System.out.println();
 		for (int i = 0; i < members.size(); i++) {
 			Member member = members.get(i);
@@ -72,17 +79,13 @@ public class MemberController {
 		System.out.printf("비밀번호 : ");
 		String loginPw = scan.nextLine();
 
-		boolean isExist = false;
-
 		for (int i = 0; i < members.size(); i++) {
 
 			Member member = members.get(i);
 
-			if (loginId.equals(loginId)) {
-				if (loginPw.equals(loginPw)) {
+			if (member.loginId.equals(loginId)) {
+				if (member.loginPw.equals(loginPw)) {
 					System.out.println(member.nickName + "님 반갑습니다");
-
-					isExist = true;
 
 					loginedMember = member;
 
@@ -93,17 +96,23 @@ public class MemberController {
 
 		if (loginedMember == null) {
 			System.out.println("잘못된 회원정보입니다");
+			System.out.println();
 
 		}
 	}
 
 	// 로그아웃
 	private void logout() {
+		
+		
 		loginedMember = null;
-		System.out.println("로그아웃 되셨습니다.");
-
+		
+		System.out.println("로그아웃 되었습니다.");
+		
 	}
+	
 
+	// memberId 찾는함수
 	public String getNicknameByMemberId(int memberId) {
 		for (int i = 0; i < members.size(); i++) {
 			if (members.get(i).id == memberId) {
@@ -114,4 +123,11 @@ public class MemberController {
 		return null;
 	}
 
+	private void makeTestData() {
+		Member m1 = new Member(1, "gsw05018", "1234", "홍길동");
+		Member m2 = new Member(2, "gsw050181", "1234", "이순신");
+
+		members.add(m1);
+		members.add(m2);
+	}
 }

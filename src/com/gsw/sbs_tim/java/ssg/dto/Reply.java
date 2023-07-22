@@ -7,19 +7,23 @@ public class Reply {
 	public String body;
 	public int memberId; // loginId로 해도됨 > 중복체크를 안넣었기 때문에 id로 작성자로 설정함
 	public String regDate;
+	
 
 	public Reply(int id, int articleId, String body, int memberId, String regDate) {
 		super();
+		
 		this.id = id;
 		this.articleId = articleId;
 		this.body = body;
 		this.memberId = memberId;
 		this.regDate = regDate;
+		
 	}
 
 	public Reply() {
 		// TODO Auto-generated constructor stub
 	}
+
 
 	
 
